@@ -54,19 +54,68 @@ class _CheckListState extends State<CheckList> {
                                   return Column(
                                     children: [
                                       Visibility(
-                                        visible: snapshot.data![i].parent == 0,
+                                        visible: snapshot.data![i].parent ==
+                                                0 &&
+                                            snapshot.data![i].name == 'Drinks',
+                                        child: //Drinks
+                                            // ----------------
+                                            ExpansionTile(
+                                          trailing: Text(''),
+                                          leading: Icon(
+                                              Icons.check_box_outline_blank),
+                                          title:
+                                              Text('${snapshot.data![i].name}'),
+                                          // Drinks Children
+                                          children: List.generate(
+                                            snapshot.data!.length,
+                                            (index) => Visibility(
+                                              visible: snapshot
+                                                      .data![index].parent ==
+                                                  4,
+                                              child: ExpansionTile(
+                                                title: Text(
+                                                    '${snapshot.data![index].name}'),
+                                                children: List.generate(
+                                                  snapshot.data!.length,
+                                                  (index) => Visibility(
+                                                    visible: snapshot
+                                                            .data![index]
+                                                            .parent ==
+                                                        5,
+                                                    child: ExpansionTile(
+                                                      title: Text(
+                                                          '${snapshot.data![index].name}'),
+                                                      children: [],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: snapshot.data![i].parent ==
+                                                0 &&
+                                            snapshot.data![i].name == 'Meal',
                                         child: ExpansionTile(
                                           trailing: Text(''),
                                           leading: Icon(
                                               Icons.check_box_outline_blank),
                                           title:
                                               Text('${snapshot.data![i].name}'),
-                                          children: [
-                                            ExpansionTile(
-                                              title: Text(
-                                                  '${snapshot.data![2].name}'),
-                                            )
-                                          ],
+                                          children: List.generate(
+                                            snapshot.data!.length,
+                                            (index) => Visibility(
+                                              visible: snapshot
+                                                      .data![index].parent ==
+                                                  13,
+                                              child: ExpansionTile(
+                                                title: Text(
+                                                    '${snapshot.data![index].name}'),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
