@@ -9,12 +9,11 @@ class Item {
   int? id;
   String? name;
   int? parent;
-  String? logo;
+  bool isSelected = false;
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     parent = json['parent'];
-    logo = json['logo'];
   }
 }
