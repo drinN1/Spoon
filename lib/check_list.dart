@@ -13,16 +13,20 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
-  bool isDrinks = false;
-  bool isPressed = false;
-  Future<List<Item>> _fetchItem() async {
-    const uri = 'http://prishtinatask.scoopandspoon.at/api/flutter.php';
+  String token = 'task:prishtina';
+  String logo = '';
+  Future<List<Item>> getItems() async {
+    const url = 'http://prishtinatask.scoopandspoon.at/api/flutter.php';
+
     final response = await http.get(
-      Uri.parse(uri),
+      Uri.parse(url),
     );
 
     var jsonData = json.decode(response.body) as Map<String, dynamic>;
+
     List<Item> items = [];
+    logo = jsonData['logo'];
+
     for (int i = 0; i < jsonData.values.toList().length - 1; i++) {
       var item = Item.fromJson(jsonData.values.toList()[i]);
 
@@ -34,8 +38,12 @@ class _CheckListState extends State<CheckList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Spoon & Scoop'),
+        centerTitle: true,
+      ),
       body: FutureBuilder<List<Item>>(
-          future: _fetchItem(),
+          future: getItems(),
           builder: (
             context,
             snapshot,
@@ -56,9 +64,8 @@ class _CheckListState extends State<CheckList> {
                                       Visibility(
                                         visible: snapshot.data![i].parent == 0,
                                         child: //Parent
-
                                             ExpansionTile(
-                                          trailing: Text(''),
+                                          trailing: const Text(''),
                                           leading: Icon(
                                               Icons.check_box_outline_blank),
                                           title:
@@ -71,7 +78,7 @@ class _CheckListState extends State<CheckList> {
                                                       .data![index].parent ==
                                                   snapshot.data![i].id,
                                               child: ExpansionTile(
-                                                trailing: Text(''),
+                                                trailing: const Text(''),
                                                 leading: Icon(Icons
                                                     .check_box_outline_blank),
                                                 title: Text(
@@ -85,7 +92,7 @@ class _CheckListState extends State<CheckList> {
                                                         snapshot
                                                             .data![index].id,
                                                     child: ExpansionTile(
-                                                      trailing: Text(''),
+                                                      trailing: const Text(''),
                                                       leading: Icon(Icons
                                                           .check_box_outline_blank),
                                                       title: Text(
@@ -100,7 +107,8 @@ class _CheckListState extends State<CheckList> {
                                                                   .data![index1]
                                                                   .id,
                                                           child: ExpansionTile(
-                                                            trailing: Text(''),
+                                                            trailing:
+                                                                const Text(''),
                                                             leading: Icon(Icons
                                                                 .check_box_outline_blank),
                                                             title: Text(
@@ -121,6 +129,17 @@ class _CheckListState extends State<CheckList> {
                                 }),
                           ),
                         ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Summary '),
+                        ),
+                        Image.network(
+                          logo,
+                          headers: {
+                            "authorization":
+                                'Basic ' + base64Encode(utf8.encode('$token'))
+                          },
+                        )
                       ],
                     )
                   : snapshot.hasError
