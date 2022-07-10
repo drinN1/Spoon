@@ -216,8 +216,13 @@ class _CheckListState extends State<CheckList> {
                                                       onExpansionChanged:
                                                           (value) {
                                                         snapshot.data![index1]
-                                                                    .parent ==
-                                                                4
+                                                                        .parent ==
+                                                                    5 ||
+                                                                snapshot
+                                                                        .data![
+                                                                            index1]
+                                                                        .parent ==
+                                                                    6
                                                             ? {
                                                                 if (value ==
                                                                     true)
@@ -234,10 +239,10 @@ class _CheckListState extends State<CheckList> {
                                                                   {
                                                                     setState(
                                                                         () {
-                                                                      selectedItems.remove(snapshot
-                                                                          .data![
-                                                                              index1]
-                                                                          .name);
+                                                                      selectedItems.removeWhere((element) =>
+                                                                          element != (snapshot.data![index].name) &&
+                                                                          element !=
+                                                                              (snapshot.data![i].name));
                                                                     })
                                                                   }
                                                               }
@@ -257,10 +262,10 @@ class _CheckListState extends State<CheckList> {
                                                                   {
                                                                     setState(
                                                                         () {
-                                                                      selectedItemsMeal.remove(snapshot
-                                                                          .data![
-                                                                              index1]
-                                                                          .name);
+                                                                      selectedItemsMeal.removeWhere((element) =>
+                                                                          element != (snapshot.data![index].name) &&
+                                                                          element !=
+                                                                              (snapshot.data![i].name));
                                                                     })
                                                                   }
                                                               };
@@ -308,7 +313,7 @@ class _CheckListState extends State<CheckList> {
                                                                 (value) {
                                                               snapshot.data![index2]
                                                                           .parent ==
-                                                                      4
+                                                                      1
                                                                   ? {
                                                                       if (value ==
                                                                           true)
@@ -322,7 +327,7 @@ class _CheckListState extends State<CheckList> {
                                                                         {
                                                                           setState(
                                                                               () {
-                                                                            selectedItemsMeal.remove(snapshot.data![index2].name);
+                                                                            selectedItems.remove(snapshot.data![index2].name);
                                                                           })
                                                                         }
                                                                     }
@@ -332,14 +337,16 @@ class _CheckListState extends State<CheckList> {
                                                                         {
                                                                           setState(
                                                                               () {
-                                                                            selectedItems.add(snapshot.data![index2].name);
+                                                                            selectedItemsMeal.add(snapshot.data![index2].name);
                                                                           })
                                                                         }
                                                                       else
                                                                         {
                                                                           setState(
                                                                               () {
-                                                                            selectedItemsMeal.remove(snapshot.data![index2].name);
+                                                                            selectedItemsMeal.removeWhere((element) =>
+                                                                                element !=
+                                                                                snapshot.data![index1].name);
                                                                           })
                                                                         }
                                                                     };
@@ -355,8 +362,11 @@ class _CheckListState extends State<CheckList> {
                                                             controlAffinity:
                                                                 ListTileControlAffinity
                                                                     .leading,
-                                                            leading: selectedItems
-                                                                    .contains(snapshot
+                                                            leading: selectedItems.contains(snapshot
+                                                                        .data![
+                                                                            index2]
+                                                                        .name) ||
+                                                                    selectedItemsMeal.contains(snapshot
                                                                         .data![
                                                                             index2]
                                                                         .name)
