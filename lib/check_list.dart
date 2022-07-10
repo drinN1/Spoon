@@ -13,6 +13,8 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
+  List selectedItems = [];
+  List<bool> isSelcted = [];
   String token = 'task:prishtina';
   String logo = '';
   Future<List<Item>> getItems() async {
@@ -66,20 +68,33 @@ class _CheckListState extends State<CheckList> {
                                         visible: snapshot.data![i].parent == 0,
                                         child: //Parent
                                             ExpansionTile(
+                                          onExpansionChanged: (value) {
+                                            if (value == true) {
+                                              setState(() {
+                                                selectedItems.add(
+                                                    snapshot.data![i].name);
+                                                isSelcted.add(true);
+                                              });
+                                            } else {
+                                              setState(() {
+                                                selectedItems.remove(
+                                                    snapshot.data![i].name);
+                                                isSelcted.add(false);
+                                              });
+                                            }
+                                            print(selectedItems);
+                                          },
                                           controlAffinity:
                                               ListTileControlAffinity.leading,
-                                          onExpansionChanged: (bool expanded) {
-                                            setState(() => snapshot.data![i]
-                                                .isSelected = expanded);
-                                          },
 
-                                          leading: snapshot.data![i].isSelected
+                                          leading: selectedItems.contains(
+                                                  snapshot.data![i].name)
                                               ? const Icon(
                                                   Icons.check_box,
                                                 )
-                                              : const Icon(
-                                                  Icons.check_box_outline_blank,
-                                                ),
+                                              : const Icon(Icons
+                                                  .check_box_outline_blank),
+
                                           title:
                                               Text('${snapshot.data![i].name}'),
                                           //  Children
@@ -90,24 +105,32 @@ class _CheckListState extends State<CheckList> {
                                                       .data![index].parent ==
                                                   snapshot.data![i].id,
                                               child: ExpansionTile(
-                                                onExpansionChanged:
-                                                    (bool expanded) {
-                                                  setState(() => snapshot
-                                                      .data![index]
-                                                      .isSelected = expanded);
+                                                onExpansionChanged: (value) {
+                                                  if (value == true) {
+                                                    setState(() {
+                                                      selectedItems.add(snapshot
+                                                          .data![index].name);
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      selectedItems.remove(
+                                                          snapshot.data![index]
+                                                              .name);
+                                                    });
+                                                  }
+                                                  print(selectedItems);
                                                 },
                                                 controlAffinity:
                                                     ListTileControlAffinity
                                                         .leading,
-                                                leading: snapshot
-                                                        .data![index].isSelected
+                                                leading: selectedItems.contains(
+                                                        snapshot
+                                                            .data![index].name)
                                                     ? const Icon(
                                                         Icons.check_box,
                                                       )
-                                                    : const Icon(
-                                                        Icons
-                                                            .check_box_outline_blank,
-                                                      ),
+                                                    : const Icon(Icons
+                                                        .check_box_outline_blank),
                                                 title: Text(
                                                     '${snapshot.data![index].name}'),
                                                 children: List.generate(
@@ -119,12 +142,39 @@ class _CheckListState extends State<CheckList> {
                                                         snapshot
                                                             .data![index].id,
                                                     child: ExpansionTile(
+                                                      onExpansionChanged:
+                                                          (value) {
+                                                        if (value == true) {
+                                                          setState(() {
+                                                            selectedItems.add(
+                                                                snapshot
+                                                                    .data![
+                                                                        index1]
+                                                                    .name);
+                                                          });
+                                                        } else {
+                                                          setState(() {
+                                                            selectedItems
+                                                                .remove(snapshot
+                                                                    .data![
+                                                                        index1]
+                                                                    .name);
+                                                          });
+                                                        }
+                                                        print(selectedItems);
+                                                      },
                                                       controlAffinity:
                                                           ListTileControlAffinity
                                                               .leading,
-                                                      leading: const Icon(
-                                                        Icons.check_box,
-                                                      ),
+                                                      leading: selectedItems
+                                                              .contains(snapshot
+                                                                  .data![index1]
+                                                                  .name)
+                                                          ? const Icon(
+                                                              Icons.check_box,
+                                                            )
+                                                          : const Icon(Icons
+                                                              .check_box_outline_blank),
                                                       title: Text(
                                                         '${snapshot.data![index1].name}',
                                                       ),
@@ -138,12 +188,43 @@ class _CheckListState extends State<CheckList> {
                                                                   .data![index1]
                                                                   .id,
                                                           child: ExpansionTile(
+                                                            onExpansionChanged:
+                                                                (value) {
+                                                              if (value ==
+                                                                  true) {
+                                                                setState(() {
+                                                                  selectedItems
+                                                                      .add(snapshot
+                                                                          .data![
+                                                                              index2]
+                                                                          .name);
+                                                                });
+                                                              } else {
+                                                                setState(() {
+                                                                  selectedItems
+                                                                      .remove(snapshot
+                                                                          .data![
+                                                                              index2]
+                                                                          .name);
+                                                                });
+                                                              }
+                                                              print(
+                                                                  selectedItems);
+                                                            },
                                                             controlAffinity:
                                                                 ListTileControlAffinity
                                                                     .leading,
-                                                            leading: const Icon(
-                                                              Icons.check_box,
-                                                            ),
+                                                            leading: selectedItems
+                                                                    .contains(snapshot
+                                                                        .data![
+                                                                            index2]
+                                                                        .name)
+                                                                ? const Icon(
+                                                                    Icons
+                                                                        .check_box,
+                                                                  )
+                                                                : const Icon(Icons
+                                                                    .check_box_outline_blank),
                                                             title: Text(
                                                               '${snapshot.data![index2].name}',
                                                             ),
@@ -173,7 +254,7 @@ class _CheckListState extends State<CheckList> {
                           logo,
                           headers: {
                             "authorization":
-                                'Basic ' + base64Encode(utf8.encode('$token'))
+                                'Basic ' + base64Encode(utf8.encode(token))
                           },
                         )
                       ],
