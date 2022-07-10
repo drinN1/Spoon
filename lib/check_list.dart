@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Spoon/selected_items.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,9 +15,10 @@ class CheckList extends StatefulWidget {
 
 class _CheckListState extends State<CheckList> {
   List selectedItems = [];
-  List<bool> isSelcted = [];
+
   String token = 'task:prishtina';
   String logo = '';
+
   Future<List<Item>> getItems() async {
     const url = 'http://prishtinatask.scoopandspoon.at/api/flutter.php';
 
@@ -73,13 +75,11 @@ class _CheckListState extends State<CheckList> {
                                               setState(() {
                                                 selectedItems.add(
                                                     snapshot.data![i].name);
-                                                isSelcted.add(true);
                                               });
                                             } else {
                                               setState(() {
                                                 selectedItems.remove(
                                                     snapshot.data![i].name);
-                                                isSelcted.add(false);
                                               });
                                             }
                                             print(selectedItems);
@@ -246,7 +246,14 @@ class _CheckListState extends State<CheckList> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'selected_items');
+                           Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SelectedItems(
+                    selectedItems
+                  ),
+                ),
+              );
                           },
                           child: const Text('Summary '),
                         ),

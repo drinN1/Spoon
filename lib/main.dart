@@ -12,9 +12,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        routes: {
-          'selected_items': (context) => const SelectedItems(),
-        },
         title: 'Task Scoop & Spoon',
         theme: ThemeData(
           primarySwatch: Colors.blue,
