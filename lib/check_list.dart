@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 
 import 'package:Spoon/models/item_model.dart';
 
+import 'widgets/logo_image.dart';
+import 'widgets/summary_button.dart';
+
 class CheckList extends StatefulWidget {
   const CheckList({Key? key}) : super(key: key);
 
@@ -13,7 +16,7 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
-  List selectedItems = [];
+  List selectedItemsDrinks = [];
   List selectedItemsMeal = [];
   String token = 'task:prishtina';
   String logo = '';
@@ -38,11 +41,63 @@ class _CheckListState extends State<CheckList> {
     return items;
   }
 
+  saveItems(bool value, Item item, Item parent, Item parentOfParent,
+      Item parentOfParentOfParent) {
+    if (value == true) {
+      setState(() {
+        selectedItemsDrinks.add(item.name);
+      });
+    } else if (item.parent == parent.id) {
+      if (value == true) {
+        setState(() {
+          selectedItemsDrinks.add(item.name);
+        });
+      } else {
+        setState(() {
+          selectedItemsDrinks.removeWhere((element) =>
+              element != parent.name &&
+              element != parentOfParent.name &&
+              element != parentOfParentOfParent.name);
+        });
+      }
+    } else {
+      setState(() {
+        selectedItemsDrinks.clear();
+      });
+    }
+  }
+
+  saveItemsMeal(bool value, Item item, Item parent, Item parentOfParent,
+      Item parentOfParentOfParent) {
+    if (value == true) {
+      setState(() {
+        selectedItemsDrinks.add(item.name);
+      });
+    } else if (item.parent == parent.id) {
+      if (value == true) {
+        setState(() {
+          selectedItemsDrinks.add(item.name);
+        });
+      } else {
+        setState(() {
+          selectedItemsDrinks.removeWhere((element) =>
+              element != parent.name &&
+              element != parentOfParent.name &&
+              element != parentOfParentOfParent.name);
+        });
+      }
+    } else {
+      setState(() {
+        selectedItemsDrinks.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Spoon & Scoop'),
+        title: const Text('Scoop & Spoon'),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Item>>(
@@ -62,314 +117,199 @@ class _CheckListState extends State<CheckList> {
                             child: ListView.builder(
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext ctx, i) {
+                                  final itemData = snapshot.data!;
                                   return Column(
                                     children: [
                                       Visibility(
-                                        visible: snapshot.data![i].parent == 0,
-                                        child: //Parent
-                                            ExpansionTile(
+                                        visible: itemData[i].parent == 0,
+                                        child: ExpansionTile(
                                           onExpansionChanged: (value) {
-                                            snapshot.data![i].name == 'Drinks'
+                                            itemData[i].name == 'Drinks'
                                                 ? {
-                                                    if (value == true)
-                                                      {
-                                                        setState(() {
-                                                          selectedItems.add(
-                                                              snapshot.data![i]
-                                                                  .name);
-                                                        })
-                                                      }
-                                                    else
-                                                      {
-                                                        setState(() {
-                                                          selectedItems.clear();
-                                                        })
-                                                      }
+                                                    saveItems(
+                                                      value,
+                                                      itemData[i],
+                                                      itemData[i],
+                                                      itemData[i],
+                                                      itemData[i],
+                                                    )
                                                   }
                                                 : {
-                                                    if (value == true)
-                                                      {
-                                                        setState(() {
-                                                          selectedItemsMeal.add(
-                                                              snapshot.data![i]
-                                                                  .name);
-                                                        })
-                                                      }
-                                                    else
-                                                      {
-                                                        setState(() {
-                                                          selectedItemsMeal
-                                                              .clear();
-                                                        })
-                                                      }
+                                                    saveItemsMeal(
+                                                      value,
+                                                      itemData[i],
+                                                      itemData[i],
+                                                      itemData[i],
+                                                      itemData[i],
+                                                    )
                                                   };
-                                            print('=======Drinks=====');
-                                            print(selectedItems);
-                                            print('=======Meals=====');
-                                            print(selectedItemsMeal);
                                           },
                                           controlAffinity:
                                               ListTileControlAffinity.leading,
-
-                                          leading: selectedItems.contains(
-                                                      snapshot.data![i].name) ||
+                                          leading: selectedItemsDrinks.contains(
+                                                      itemData[i].name) ||
                                                   selectedItemsMeal.contains(
-                                                      snapshot.data![i].name)
+                                                      itemData[i].name)
                                               ? const Icon(
                                                   Icons.check_box,
                                                 )
                                               : const Icon(Icons
                                                   .check_box_outline_blank),
-
-                                          title:
-                                              Text('${snapshot.data![i].name}'),
-                                          //  Children
+                                          title: Text('${itemData[i].name}'),
                                           children: List.generate(
-                                            snapshot.data!.length,
+                                            itemData.length,
                                             (index) => Visibility(
-                                              visible: snapshot
-                                                      .data![index].parent ==
-                                                  snapshot.data![i].id,
+                                              visible: itemData[index].parent ==
+                                                  itemData[i].id,
                                               child: ExpansionTile(
                                                 onExpansionChanged: (value) {
-                                                  snapshot.data![index]
-                                                              .parent ==
-                                                          4
+                                                  itemData[index].parent == 4
                                                       ? {
-                                                          if (value == true)
-                                                            {
-                                                              setState(() {
-                                                                selectedItems
-                                                                    .add(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .name);
-                                                              })
-                                                            }
-                                                          else
-                                                            {
-                                                              setState(() {
-                                                                selectedItems.removeWhere(
-                                                                    (element) =>
-                                                                        element !=
-                                                                        snapshot
-                                                                            .data![i]
-                                                                            .name);
-                                                              })
-                                                            }
+                                                          saveItems(
+                                                            value,
+                                                            itemData[index],
+                                                            itemData[i],
+                                                            itemData[i],
+                                                            itemData[i],
+                                                          )
                                                         }
                                                       : {
-                                                          if (value == true)
-                                                            {
-                                                              setState(() {
-                                                                selectedItemsMeal
-                                                                    .add(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .name);
-                                                              })
-                                                            }
-                                                          else
-                                                            {
-                                                              setState(() {
-                                                                selectedItemsMeal.removeWhere(
-                                                                    (element) =>
-                                                                        element !=
-                                                                        snapshot
-                                                                            .data![i]
-                                                                            .name);
-                                                              })
-                                                            }
+                                                          saveItemsMeal(
+                                                            value,
+                                                            itemData[index],
+                                                            itemData[i],
+                                                            itemData[i],
+                                                            itemData[i],
+                                                          )
                                                         };
-                                                  print('=======Drinks=====');
-                                                  print(selectedItems);
-                                                  print('=======Meals=====');
-                                                  print(selectedItemsMeal);
                                                 },
                                                 controlAffinity:
                                                     ListTileControlAffinity
                                                         .leading,
-                                                leading: selectedItems.contains(
-                                                            snapshot
-                                                                .data![index]
-                                                                .name) ||
+                                                leading: selectedItemsDrinks
+                                                            .contains(
+                                                                itemData[index]
+                                                                    .name) ||
                                                         selectedItemsMeal
-                                                            .contains(snapshot
-                                                                .data![index]
-                                                                .name)
+                                                            .contains(
+                                                                itemData[index]
+                                                                    .name)
                                                     ? const Icon(
                                                         Icons.check_box,
                                                       )
                                                     : const Icon(Icons
                                                         .check_box_outline_blank),
                                                 title: Text(
-                                                    '${snapshot.data![index].name}'),
+                                                    '${itemData[index].name}'),
                                                 children: List.generate(
-                                                  snapshot.data!.length,
+                                                  itemData.length,
                                                   (index1) => Visibility(
-                                                    visible: snapshot
-                                                            .data![index1]
+                                                    visible: itemData[index1]
                                                             .parent ==
-                                                        snapshot
-                                                            .data![index].id,
+                                                        itemData[index].id,
                                                     child: ExpansionTile(
                                                       onExpansionChanged:
                                                           (value) {
-                                                        snapshot.data![index1]
-                                                                        .parent ==
+                                                        itemData[index1].parent ==
                                                                     5 ||
-                                                                snapshot
-                                                                        .data![
-                                                                            index1]
+                                                                itemData[index1]
                                                                         .parent ==
                                                                     6
                                                             ? {
-                                                                if (value ==
-                                                                    true)
-                                                                  {
-                                                                    setState(
-                                                                        () {
-                                                                      selectedItems.add(snapshot
-                                                                          .data![
-                                                                              index1]
-                                                                          .name);
-                                                                    })
-                                                                  }
-                                                                else
-                                                                  {
-                                                                    setState(
-                                                                        () {
-                                                                      selectedItems.removeWhere((element) =>
-                                                                          element != (snapshot.data![index].name) &&
-                                                                          element !=
-                                                                              (snapshot.data![i].name));
-                                                                    })
-                                                                  }
+                                                                saveItems(
+                                                                  value,
+                                                                  itemData[
+                                                                      index1],
+                                                                  itemData[
+                                                                      index],
+                                                                  itemData[i],
+                                                                  itemData[i],
+                                                                )
                                                               }
                                                             : {
-                                                                if (value ==
-                                                                    true)
-                                                                  {
-                                                                    setState(
-                                                                        () {
-                                                                      selectedItemsMeal.add(snapshot
-                                                                          .data![
-                                                                              index1]
-                                                                          .name);
-                                                                    })
-                                                                  }
-                                                                else
-                                                                  {
-                                                                    setState(
-                                                                        () {
-                                                                      selectedItemsMeal.removeWhere((element) =>
-                                                                          element != (snapshot.data![index].name) &&
-                                                                          element !=
-                                                                              (snapshot.data![i].name));
-                                                                    })
-                                                                  }
+                                                                saveItemsMeal(
+                                                                  value,
+                                                                  itemData[
+                                                                      index1],
+                                                                  itemData[
+                                                                      index],
+                                                                  itemData[i],
+                                                                  itemData[i],
+                                                                )
                                                               };
-
-                                                        print(
-                                                            '=======Drinks=====');
-                                                        print(selectedItems);
-                                                        print(
-                                                            '=======Meals=====');
-                                                        print(
-                                                            selectedItemsMeal);
                                                       },
                                                       controlAffinity:
                                                           ListTileControlAffinity
                                                               .leading,
-                                                      leading: selectedItems
-                                                                  .contains(snapshot
-                                                                      .data![
+                                                      leading: selectedItemsDrinks
+                                                                  .contains(itemData[
                                                                           index1]
                                                                       .name) ||
                                                               selectedItemsMeal
-                                                                  .contains(snapshot
-                                                                      .data![
-                                                                          index1]
-                                                                      .name)
+                                                                  .contains(
+                                                                      itemData[
+                                                                              index1]
+                                                                          .name)
                                                           ? const Icon(
                                                               Icons.check_box,
                                                             )
                                                           : const Icon(Icons
                                                               .check_box_outline_blank),
                                                       title: Text(
-                                                        '${snapshot.data![index1].name}',
+                                                        '${itemData[index1].name}',
                                                       ),
                                                       children: List.generate(
-                                                        snapshot.data!.length,
+                                                        itemData.length,
                                                         (index2) => Visibility(
-                                                          visible: snapshot
-                                                                  .data![index2]
+                                                          visible: itemData[
+                                                                      index2]
                                                                   .parent ==
-                                                              snapshot
-                                                                  .data![index1]
+                                                              itemData[index1]
                                                                   .id,
                                                           child: ExpansionTile(
                                                             onExpansionChanged:
                                                                 (value) {
-                                                              snapshot.data![index2]
-                                                                          .parent ==
-                                                                      1
+                                                              itemData[index2].parent ==
+                                                                          1 ||
+                                                                      itemData[index2]
+                                                                              .parent ==
+                                                                          9
                                                                   ? {
-                                                                      if (value ==
-                                                                          true)
-                                                                        {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedItems.add(snapshot.data![index2].name);
-                                                                          })
-                                                                        }
-                                                                      else
-                                                                        {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedItems.remove(snapshot.data![index2].name);
-                                                                          })
-                                                                        }
+                                                                      saveItems(
+                                                                        value,
+                                                                        itemData[
+                                                                            index2],
+                                                                        itemData[
+                                                                            index1],
+                                                                        itemData[
+                                                                            index],
+                                                                        itemData[
+                                                                            i],
+                                                                      )
                                                                     }
                                                                   : {
-                                                                      if (value ==
-                                                                          true)
-                                                                        {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedItemsMeal.add(snapshot.data![index2].name);
-                                                                          })
-                                                                        }
-                                                                      else
-                                                                        {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedItemsMeal.removeWhere((element) =>
-                                                                                element !=
-                                                                                snapshot.data![index1].name);
-                                                                          })
-                                                                        }
+                                                                      saveItemsMeal(
+                                                                        value,
+                                                                        itemData[
+                                                                            index2],
+                                                                        itemData[
+                                                                            index1],
+                                                                        itemData[
+                                                                            index],
+                                                                        itemData[
+                                                                            i],
+                                                                      )
                                                                     };
-                                                              print(
-                                                                  '=======Drinks=====');
-                                                              print(
-                                                                  selectedItems);
-                                                              print(
-                                                                  '=======Meals=====');
-                                                              print(
-                                                                  selectedItemsMeal);
                                                             },
                                                             controlAffinity:
                                                                 ListTileControlAffinity
                                                                     .leading,
-                                                            leading: selectedItems.contains(snapshot
-                                                                        .data![
-                                                                            index2]
-                                                                        .name) ||
-                                                                    selectedItemsMeal.contains(snapshot
-                                                                        .data![
-                                                                            index2]
-                                                                        .name)
+                                                            leading: selectedItemsDrinks.contains(
+                                                                        itemData[index2]
+                                                                            .name) ||
+                                                                    selectedItemsMeal.contains(
+                                                                        itemData[index2]
+                                                                            .name)
                                                                 ? const Icon(
                                                                     Icons
                                                                         .check_box,
@@ -377,7 +317,7 @@ class _CheckListState extends State<CheckList> {
                                                                 : const Icon(Icons
                                                                     .check_box_outline_blank),
                                                             title: Text(
-                                                              '${snapshot.data![index2].name}',
+                                                              '${itemData[index2].name}',
                                                             ),
                                                           ),
                                                         ),
@@ -395,24 +335,13 @@ class _CheckListState extends State<CheckList> {
                                 }),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, 'selected_items');
-                          },
-                          child: const Text('Summary '),
-                        ),
-                        Image.network(
-                          logo,
-                          headers: {
-                            "authorization":
-                                'Basic ' + base64Encode(utf8.encode(token))
-                          },
-                        )
+                        const SummaryButton(),
+                        LogoImage(logo: logo, token: token)
                       ],
                     )
                   : snapshot.hasError
                       ? const Center(
-                          child: Text('Something went wrong'),
+                          child: Text('Snapshot Has Error'),
                         )
                       : const Center(
                           child: CircularProgressIndicator(),
