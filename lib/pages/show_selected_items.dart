@@ -19,7 +19,6 @@ class _ShowSelectedItemsState extends State<ShowSelectedItems> {
     return Scaffold(
       backgroundColor: Colors.pink[100],
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text(
           'You Selected these Items',
           style: TextStyle(
