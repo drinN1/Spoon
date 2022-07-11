@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../selected_items.dart';
+import '../pages/selected_items.dart';
 
 class SummaryButton extends StatefulWidget {
   const SummaryButton(

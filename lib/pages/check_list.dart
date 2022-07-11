@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:spoon/models/item_model.dart';
 import 'package:spoon/widgets/custom_app_bar.dart';
-import 'widgets/summary_button.dart';
+import '../widgets/summary_button.dart';
 
 class CheckList extends StatefulWidget {
   const CheckList({Key? key}) : super(key: key);
@@ -319,7 +319,8 @@ class _CheckListState extends State<CheckList> {
                                                                               .name)
                                                                       ? const Icon(
                                                                           Icons
-                                                                              .check_box)
+                                                                              .check_box,
+                                                                        )
                                                                       : const Icon(
                                                                           Icons
                                                                               .check_box_outline_blank),

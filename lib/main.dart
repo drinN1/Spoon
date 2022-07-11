@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spoon/check_list.dart';
+import 'package:spoon/pages/check_list.dart';
 
 void main() {
   runApp(const MyApp());

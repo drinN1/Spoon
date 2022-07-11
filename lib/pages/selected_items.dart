@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:spoon/show_selected_items.dart';
+import 'package:spoon/pages/show_selected_items.dart';
 
-import 'widgets/custom_app_bar.dart';
-import 'widgets/logo_image.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/logo_image.dart';
 
 class SelectedItems extends StatefulWidget {
   SelectedItems(
