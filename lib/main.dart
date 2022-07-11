@@ -1,6 +1,5 @@
-import 'package:Spoon/selected_items.dart';
 import 'package:flutter/material.dart';
-import 'package:Spoon/check_list.dart';
+import 'package:spoon/check_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        routes: {
-          'selected_items': (context) => const SelectedItems(),
-        },
+        debugShowCheckedModeBanner: false,
         title: 'Task Scoop & Spoon',
         theme: ThemeData(
           primarySwatch: Colors.blue,

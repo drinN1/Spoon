@@ -14,8 +14,9 @@ class LogoImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.network(
+      cacheWidth: 200,
       logo,
-      headers: {"authorization": 'Basic ' + base64Encode(utf8.encode(token))},
+      headers: {"authorization": 'Basic ${base64Encode(utf8.encode(token))}'},
     );
   }
 }
